@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>基础知识 :: Jupyterhub on Kubernetes Document</title>
+    <link>http://localhost:1313/basics/index.html</link>
+    <description>这是一个新的章节。</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="http://localhost:1313/basics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>引言</title>
+      <link>http://localhost:1313/basics/intro/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/basics/intro/index.html</guid>
+      <description>这是一段引言</description>
+    </item>
+  </channel>
+</rss>

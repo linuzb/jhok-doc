@@ -1,0 +1,5 @@
+baseURL = 'https://jhok.linuzb.xyz'
+languageCode = 'en-us'
+title = 'Jupyterhub on Kubernetes Document'
+
+theme = 'hugo-theme-relearn'
