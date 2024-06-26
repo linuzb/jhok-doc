@@ -3,8 +3,6 @@ title = "Nfs Provider"
 weight = 1
 +++
 
-
-
 ## 前言
 
 本文介绍如何使用 nfs 网络存储为 kubernetes 提供动态的PV创建。
