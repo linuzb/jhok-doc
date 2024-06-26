@@ -5,33 +5,69 @@
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="generator" content="Hugo 0.127.0">
     <meta name="generator" content="Relearn 6.0.0+tip">
-    <meta name="description" content="这是一段引言">
+    <meta name="description" content="这里简单粗浅的介绍一些概念，以便于大家对后续流程的理解
+默认大家已经理解操作系统、进程、存储的概念
+虚拟机就是模拟出来的一台完整的计算机系统。一台电脑利用虚拟机可以模拟出很多机器。但是这里我们并不使用虚拟机，介绍虚拟机是为了引出另一个概念——容器化。
+容器化和虚拟机类似，它也可以在一台机器上模拟出很多计算系统。但是容器化技术更轻量一些，后面我们介绍的多用户环境其实都是容器化技术模拟出来的。感兴趣的可以搜一下容器化和虚拟机的区别。这里我们只需要知道，我们将使用容器化技术为每个用户创建出独立且相互隔离的计算环境。
+如何使用虚拟机想必大家都知道，例如 Vmware、virtualBox 等等。那么如何创建容器呢，那就不得不提大名鼎鼎的 Docker，感兴趣的可以了解一下。不过很遗憾的是，我们没有使用 docker 作为容器化部署的工具，而是使用更轻量更符合云原生标准的 containerd。感兴趣的可以了解一下这两个区别。
+好了，前面介绍的只需要知道，我们将使用容器化技术来实现多用户独立的计算环境。接下来我们将介绍一些 k8s 的概念。
+首先，Pod是 k8s 的最小执行单元。这句话怎么理解呢？如果将 k8s 看作是一个操作系统的话，那么 pod 就是这个操作系统的进程。大家知道进程是操作系统进行资源分配和调度的基本单位。同理，pod 也是 k8s 中资源分配和调度的基本单位。还是优点绕？说白了，pod就是我们前面提到的容器，只不过在 k8s 中叫 pod。一个 pod 就是一个独立的计算环境，可以理解成一台虚拟机。
+为了更好的理解我们所说的应用，我们还需要介绍一个概念——镜像。镜像这个概念大家并不陌生，大家用过各种版本的操作系统，例如 Windows7、Windows10 以及 Ubuntu20.04 等。我们常说的装机其实都要先准备一个系统镜像。同理，容器也有容器镜像（由于 docker 太流行了，所以很多情况下我们也叫 docker 镜像，大家只需要知道这是一个概念就行）。容器镜像中也预装好了各种软件，通常情况下，我们可以直接使用被人封装好的镜像，如果有特殊需求，我们也可以自己制作定制化的镜像，这个我们会在后面介绍，这里只需要知道镜像的概念即可。
+我们知道，创建虚拟机需要在虚拟机软件上配置好各种资源，例如 cpu、内存、存储、网络等, 然后在虚拟机软件上创建一个虚拟机。那么在 k8s 上如何创建一个 pod 呢？ 这里需要补充一点，k8s 的所有服务都是声明式的，什么是声明式？就是把所有需要的资源（镜像、计算资源、存储资源、网络）全写到一个配置文件，然后把这个配置文件提交到集群，即可创建出你想要的 pod。
+有人会想，既然把 k8s 类比成操作系统，pod 类比成进程（软件）。那么，有没有 pod 的包管理器呢？例如 ubuntu 下我可以使用apt install vim来安装一个软件。那么 k8s 是否也可以这样安装应用，针对特定的应用我只需要调整启动参数即可。k8s 确实有应用市场，也有类似的包管理器，叫 helm ，在接下来的介绍中，我们将介绍如何使用 helm 一件部署 juputerhub 到 k8s 集群。">
     <meta name="author" content="">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="引言 :: Jupyterhub on Kubernetes Document">
-    <meta name="twitter:description" content="这是一段引言">
+    <meta name="twitter:title" content="概念介绍 :: Jupyterhub on Kubernetes Document">
+    <meta name="twitter:description" content="这里简单粗浅的介绍一些概念，以便于大家对后续流程的理解
+默认大家已经理解操作系统、进程、存储的概念
+虚拟机就是模拟出来的一台完整的计算机系统。一台电脑利用虚拟机可以模拟出很多机器。但是这里我们并不使用虚拟机，介绍虚拟机是为了引出另一个概念——容器化。
+容器化和虚拟机类似，它也可以在一台机器上模拟出很多计算系统。但是容器化技术更轻量一些，后面我们介绍的多用户环境其实都是容器化技术模拟出来的。感兴趣的可以搜一下容器化和虚拟机的区别。这里我们只需要知道，我们将使用容器化技术为每个用户创建出独立且相互隔离的计算环境。
+如何使用虚拟机想必大家都知道，例如 Vmware、virtualBox 等等。那么如何创建容器呢，那就不得不提大名鼎鼎的 Docker，感兴趣的可以了解一下。不过很遗憾的是，我们没有使用 docker 作为容器化部署的工具，而是使用更轻量更符合云原生标准的 containerd。感兴趣的可以了解一下这两个区别。
+好了，前面介绍的只需要知道，我们将使用容器化技术来实现多用户独立的计算环境。接下来我们将介绍一些 k8s 的概念。
+首先，Pod是 k8s 的最小执行单元。这句话怎么理解呢？如果将 k8s 看作是一个操作系统的话，那么 pod 就是这个操作系统的进程。大家知道进程是操作系统进行资源分配和调度的基本单位。同理，pod 也是 k8s 中资源分配和调度的基本单位。还是优点绕？说白了，pod就是我们前面提到的容器，只不过在 k8s 中叫 pod。一个 pod 就是一个独立的计算环境，可以理解成一台虚拟机。
+为了更好的理解我们所说的应用，我们还需要介绍一个概念——镜像。镜像这个概念大家并不陌生，大家用过各种版本的操作系统，例如 Windows7、Windows10 以及 Ubuntu20.04 等。我们常说的装机其实都要先准备一个系统镜像。同理，容器也有容器镜像（由于 docker 太流行了，所以很多情况下我们也叫 docker 镜像，大家只需要知道这是一个概念就行）。容器镜像中也预装好了各种软件，通常情况下，我们可以直接使用被人封装好的镜像，如果有特殊需求，我们也可以自己制作定制化的镜像，这个我们会在后面介绍，这里只需要知道镜像的概念即可。
+我们知道，创建虚拟机需要在虚拟机软件上配置好各种资源，例如 cpu、内存、存储、网络等, 然后在虚拟机软件上创建一个虚拟机。那么在 k8s 上如何创建一个 pod 呢？ 这里需要补充一点，k8s 的所有服务都是声明式的，什么是声明式？就是把所有需要的资源（镜像、计算资源、存储资源、网络）全写到一个配置文件，然后把这个配置文件提交到集群，即可创建出你想要的 pod。
+有人会想，既然把 k8s 类比成操作系统，pod 类比成进程（软件）。那么，有没有 pod 的包管理器呢？例如 ubuntu 下我可以使用apt install vim来安装一个软件。那么 k8s 是否也可以这样安装应用，针对特定的应用我只需要调整启动参数即可。k8s 确实有应用市场，也有类似的包管理器，叫 helm ，在接下来的介绍中，我们将介绍如何使用 helm 一件部署 juputerhub 到 k8s 集群。">
     <meta property="og:url" content="http://localhost:1313/basics/intro/index.html">
     <meta property="og:site_name" content="Jupyterhub on Kubernetes Document">
-    <meta property="og:title" content="引言 :: Jupyterhub on Kubernetes Document">
-    <meta property="og:description" content="这是一段引言">
+    <meta property="og:title" content="概念介绍 :: Jupyterhub on Kubernetes Document">
+    <meta property="og:description" content="这里简单粗浅的介绍一些概念，以便于大家对后续流程的理解
+默认大家已经理解操作系统、进程、存储的概念
+虚拟机就是模拟出来的一台完整的计算机系统。一台电脑利用虚拟机可以模拟出很多机器。但是这里我们并不使用虚拟机，介绍虚拟机是为了引出另一个概念——容器化。
+容器化和虚拟机类似，它也可以在一台机器上模拟出很多计算系统。但是容器化技术更轻量一些，后面我们介绍的多用户环境其实都是容器化技术模拟出来的。感兴趣的可以搜一下容器化和虚拟机的区别。这里我们只需要知道，我们将使用容器化技术为每个用户创建出独立且相互隔离的计算环境。
+如何使用虚拟机想必大家都知道，例如 Vmware、virtualBox 等等。那么如何创建容器呢，那就不得不提大名鼎鼎的 Docker，感兴趣的可以了解一下。不过很遗憾的是，我们没有使用 docker 作为容器化部署的工具，而是使用更轻量更符合云原生标准的 containerd。感兴趣的可以了解一下这两个区别。
+好了，前面介绍的只需要知道，我们将使用容器化技术来实现多用户独立的计算环境。接下来我们将介绍一些 k8s 的概念。
+首先，Pod是 k8s 的最小执行单元。这句话怎么理解呢？如果将 k8s 看作是一个操作系统的话，那么 pod 就是这个操作系统的进程。大家知道进程是操作系统进行资源分配和调度的基本单位。同理，pod 也是 k8s 中资源分配和调度的基本单位。还是优点绕？说白了，pod就是我们前面提到的容器，只不过在 k8s 中叫 pod。一个 pod 就是一个独立的计算环境，可以理解成一台虚拟机。
+为了更好的理解我们所说的应用，我们还需要介绍一个概念——镜像。镜像这个概念大家并不陌生，大家用过各种版本的操作系统，例如 Windows7、Windows10 以及 Ubuntu20.04 等。我们常说的装机其实都要先准备一个系统镜像。同理，容器也有容器镜像（由于 docker 太流行了，所以很多情况下我们也叫 docker 镜像，大家只需要知道这是一个概念就行）。容器镜像中也预装好了各种软件，通常情况下，我们可以直接使用被人封装好的镜像，如果有特殊需求，我们也可以自己制作定制化的镜像，这个我们会在后面介绍，这里只需要知道镜像的概念即可。
+我们知道，创建虚拟机需要在虚拟机软件上配置好各种资源，例如 cpu、内存、存储、网络等, 然后在虚拟机软件上创建一个虚拟机。那么在 k8s 上如何创建一个 pod 呢？ 这里需要补充一点，k8s 的所有服务都是声明式的，什么是声明式？就是把所有需要的资源（镜像、计算资源、存储资源、网络）全写到一个配置文件，然后把这个配置文件提交到集群，即可创建出你想要的 pod。
+有人会想，既然把 k8s 类比成操作系统，pod 类比成进程（软件）。那么，有没有 pod 的包管理器呢？例如 ubuntu 下我可以使用apt install vim来安装一个软件。那么 k8s 是否也可以这样安装应用，针对特定的应用我只需要调整启动参数即可。k8s 确实有应用市场，也有类似的包管理器，叫 helm ，在接下来的介绍中，我们将介绍如何使用 helm 一件部署 juputerhub 到 k8s 集群。">
     <meta property="og:locale" content="en_us">
     <meta property="og:type" content="article">
     <meta property="article:section" content="基础知识">
-    <meta itemprop="name" content="引言 :: Jupyterhub on Kubernetes Document">
-    <meta itemprop="description" content="这是一段引言">
-    <meta itemprop="wordCount" content="1">
-    <title>引言 :: Jupyterhub on Kubernetes Document</title>
-    <link href="/css/fontawesome-all.min.css?1719362982" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/fontawesome-all.min.css?1719362982" rel="stylesheet"></noscript>
-    <link href="/css/nucleus.css?1719362982" rel="stylesheet">
-    <link href="/css/auto-complete.css?1719362982" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/auto-complete.css?1719362982" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar.min.css?1719362982" rel="stylesheet">
-    <link href="/css/fonts.css?1719362982" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/fonts.css?1719362982" rel="stylesheet"></noscript>
-    <link href="/css/theme.css?1719362982" rel="stylesheet">
-    <link href="/css/theme-auto.css?1719362982" rel="stylesheet" id="R-variant-style">
-    <link href="/css/chroma-auto.css?1719362982" rel="stylesheet" id="R-variant-chroma-style">
-    <link href="/css/variant.css?1719362982" rel="stylesheet">
-    <link href="/css/print.css?1719362982" rel="stylesheet" media="print">
-    <script src="/js/variant.js?1719362982"></script>
+    <meta itemprop="name" content="概念介绍 :: Jupyterhub on Kubernetes Document">
+    <meta itemprop="description" content="这里简单粗浅的介绍一些概念，以便于大家对后续流程的理解
+默认大家已经理解操作系统、进程、存储的概念
+虚拟机就是模拟出来的一台完整的计算机系统。一台电脑利用虚拟机可以模拟出很多机器。但是这里我们并不使用虚拟机，介绍虚拟机是为了引出另一个概念——容器化。
+容器化和虚拟机类似，它也可以在一台机器上模拟出很多计算系统。但是容器化技术更轻量一些，后面我们介绍的多用户环境其实都是容器化技术模拟出来的。感兴趣的可以搜一下容器化和虚拟机的区别。这里我们只需要知道，我们将使用容器化技术为每个用户创建出独立且相互隔离的计算环境。
+如何使用虚拟机想必大家都知道，例如 Vmware、virtualBox 等等。那么如何创建容器呢，那就不得不提大名鼎鼎的 Docker，感兴趣的可以了解一下。不过很遗憾的是，我们没有使用 docker 作为容器化部署的工具，而是使用更轻量更符合云原生标准的 containerd。感兴趣的可以了解一下这两个区别。
+好了，前面介绍的只需要知道，我们将使用容器化技术来实现多用户独立的计算环境。接下来我们将介绍一些 k8s 的概念。
+首先，Pod是 k8s 的最小执行单元。这句话怎么理解呢？如果将 k8s 看作是一个操作系统的话，那么 pod 就是这个操作系统的进程。大家知道进程是操作系统进行资源分配和调度的基本单位。同理，pod 也是 k8s 中资源分配和调度的基本单位。还是优点绕？说白了，pod就是我们前面提到的容器，只不过在 k8s 中叫 pod。一个 pod 就是一个独立的计算环境，可以理解成一台虚拟机。
+为了更好的理解我们所说的应用，我们还需要介绍一个概念——镜像。镜像这个概念大家并不陌生，大家用过各种版本的操作系统，例如 Windows7、Windows10 以及 Ubuntu20.04 等。我们常说的装机其实都要先准备一个系统镜像。同理，容器也有容器镜像（由于 docker 太流行了，所以很多情况下我们也叫 docker 镜像，大家只需要知道这是一个概念就行）。容器镜像中也预装好了各种软件，通常情况下，我们可以直接使用被人封装好的镜像，如果有特殊需求，我们也可以自己制作定制化的镜像，这个我们会在后面介绍，这里只需要知道镜像的概念即可。
+我们知道，创建虚拟机需要在虚拟机软件上配置好各种资源，例如 cpu、内存、存储、网络等, 然后在虚拟机软件上创建一个虚拟机。那么在 k8s 上如何创建一个 pod 呢？ 这里需要补充一点，k8s 的所有服务都是声明式的，什么是声明式？就是把所有需要的资源（镜像、计算资源、存储资源、网络）全写到一个配置文件，然后把这个配置文件提交到集群，即可创建出你想要的 pod。
+有人会想，既然把 k8s 类比成操作系统，pod 类比成进程（软件）。那么，有没有 pod 的包管理器呢？例如 ubuntu 下我可以使用apt install vim来安装一个软件。那么 k8s 是否也可以这样安装应用，针对特定的应用我只需要调整启动参数即可。k8s 确实有应用市场，也有类似的包管理器，叫 helm ，在接下来的介绍中，我们将介绍如何使用 helm 一件部署 juputerhub 到 k8s 集群。">
+    <meta itemprop="wordCount" content="69">
+    <title>概念介绍 :: Jupyterhub on Kubernetes Document</title>
+    <link href="/css/fontawesome-all.min.css?1719363346" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/fontawesome-all.min.css?1719363346" rel="stylesheet"></noscript>
+    <link href="/css/nucleus.css?1719363346" rel="stylesheet">
+    <link href="/css/auto-complete.css?1719363346" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/auto-complete.css?1719363346" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar.min.css?1719363346" rel="stylesheet">
+    <link href="/css/fonts.css?1719363346" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/fonts.css?1719363346" rel="stylesheet"></noscript>
+    <link href="/css/theme.css?1719363346" rel="stylesheet">
+    <link href="/css/theme-auto.css?1719363346" rel="stylesheet" id="R-variant-style">
+    <link href="/css/chroma-auto.css?1719363346" rel="stylesheet" id="R-variant-chroma-style">
+    <link href="/css/variant.css?1719363346" rel="stylesheet">
+    <link href="/css/print.css?1719363346" rel="stylesheet" media="print">
+    <script src="/js/variant.js?1719363346"></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.relBasePath='..\/..';
@@ -67,8 +103,9 @@
             </div>
           </div>
           <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li
-            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="/basics/index.html"><span itemprop="name">基础知识</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li
-            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><span itemprop="name">引言</span><meta itemprop="position" content="2"></li>
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="/index.html"><span itemprop="name">简介</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="/basics/index.html"><span itemprop="name">基础知识</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><span itemprop="name">概念介绍</span><meta itemprop="position" content="3"></li>
           </ol>
           <div class="topbar-area topbar-area-end" data-area="end">
             <div class="topbar-button topbar-button-prev" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show"><a class="topbar-control" href="/basics/index.html" title="基础知识 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a>
@@ -93,9 +130,18 @@
             <header class="headline">
             </header>
 
-<h1 id="引言">引言</h1>
+<h1 id="概念介绍">概念介绍</h1>
 
-<p>这是一段引言</p>
+<p>这里简单粗浅的介绍一些概念，以便于大家对后续流程的理解</p>
+<p>默认大家已经理解<strong>操作系统</strong>、<strong>进程</strong>、<strong>存储</strong>的概念</p>
+<p><strong>虚拟机</strong>就是模拟出来的一台完整的计算机系统。一台电脑利用虚拟机可以模拟出很多机器。但是这里我们并不使用虚拟机，介绍虚拟机是为了引出另一个概念——容器化。</p>
+<p><strong>容器化</strong>和虚拟机类似，它也可以在一台机器上模拟出很多计算系统。但是容器化技术更轻量一些，后面我们介绍的多用户环境其实都是容器化技术模拟出来的。感兴趣的可以搜一下容器化和虚拟机的区别。这里我们只需要知道，我们将使用容器化技术为每个用户创建出独立且相互隔离的计算环境。</p>
+<p>如何使用虚拟机想必大家都知道，例如 Vmware、virtualBox 等等。那么如何创建容器呢，那就不得不提大名鼎鼎的 <a href="https://yeasy.gitbook.io/docker_practice/introduction/what" rel="external" target="_blank">Docker</a>，感兴趣的可以了解一下。不过很遗憾的是，我们没有使用 docker 作为容器化部署的工具，而是使用更轻量更符合云原生标准的 <strong>containerd</strong>。感兴趣的可以了解一下这两个区别。</p>
+<p>好了，前面介绍的只需要知道，我们将使用容器化技术来实现多用户独立的计算环境。接下来我们将介绍一些 k8s 的概念。</p>
+<p>首先，<strong>Pod</strong>是 k8s 的最小执行单元。这句话怎么理解呢？如果将 k8s 看作是一个操作系统的话，那么 pod 就是这个操作系统的进程。大家知道进程是操作系统进行资源分配和调度的基本单位。同理，pod 也是 k8s 中资源分配和调度的基本单位。还是优点绕？说白了，pod就是我们前面提到的容器，只不过在 k8s 中叫 pod。一个 pod 就是一个独立的计算环境，可以理解成一台虚拟机。</p>
+<p>为了更好的理解我们所说的应用，我们还需要介绍一个概念——<strong>镜像</strong>。镜像这个概念大家并不陌生，大家用过各种版本的操作系统，例如 Windows7、Windows10 以及 Ubuntu20.04 等。我们常说的装机其实都要先准备一个系统镜像。同理，容器也有容器镜像（由于 docker 太流行了，所以很多情况下我们也叫 docker 镜像，大家只需要知道这是一个概念就行）。容器镜像中也预装好了各种软件，通常情况下，我们可以直接使用被人封装好的镜像，如果有特殊需求，我们也可以自己制作定制化的镜像，这个我们会在后面介绍，这里只需要知道镜像的概念即可。</p>
+<p>我们知道，创建虚拟机需要在虚拟机软件上配置好各种资源，例如 cpu、内存、存储、网络等, 然后在虚拟机软件上创建一个虚拟机。那么在 k8s 上如何创建一个 pod 呢？ 这里需要补充一点，k8s 的所有服务都是声明式的，什么是声明式？就是把所有需要的资源（镜像、计算资源、存储资源、网络）全写到一个配置文件，然后把这个配置文件提交到集群，即可创建出你想要的 pod。</p>
+<p>有人会想，既然把 k8s 类比成操作系统，pod 类比成进程（软件）。那么，有没有 pod 的包管理器呢？例如 ubuntu 下我可以使用<code>apt install vim</code>来安装一个软件。那么 k8s 是否也可以这样安装应用，针对特定的应用我只需要调整启动参数即可。k8s 确实有应用市场，也有类似的包管理器，叫 <a href="https://helm.sh/" rel="external" target="_blank">helm</a> ，在接下来的介绍中，我们将介绍如何使用 helm 一件部署 juputerhub 到 k8s 集群。</p>
 
             <footer class="footline">
             </footer>
@@ -171,12 +217,12 @@
         <script>
           var contentLangs=['en'];
         </script>
-        <script src="/js/auto-complete.js?1719362982" defer></script>
-        <script src="/js/lunr/lunr.min.js?1719362982" defer></script>
-        <script src="/js/lunr/lunr.stemmer.support.min.js?1719362982" defer></script>
-        <script src="/js/lunr/lunr.multi.min.js?1719362982" defer></script>
-        <script src="/js/lunr/lunr.en.min.js?1719362982" defer></script>
-        <script src="/js/search.js?1719362982" defer></script>
+        <script src="/js/auto-complete.js?1719363346" defer></script>
+        <script src="/js/lunr/lunr.min.js?1719363346" defer></script>
+        <script src="/js/lunr/lunr.stemmer.support.min.js?1719363346" defer></script>
+        <script src="/js/lunr/lunr.multi.min.js?1719363346" defer></script>
+        <script src="/js/lunr/lunr.en.min.js?1719363346" defer></script>
+        <script src="/js/search.js?1719363346" defer></script>
       </div>
       <div id="R-homelinks" class="default-animation homelinks">
         <ul>
@@ -188,7 +234,7 @@
         <div id="R-topics">
           <ul class="enlarge morespace collapsible-menu">
           <li data-nav-id="/basics/index.html" class="parent "><a class="padding" href="/basics/index.html">基础知识</a><ul id="R-subsections-a6deabe447afe1b2e1405bfc57ca61ff" class="morespace collapsible-menu">
-          <li data-nav-id="/basics/intro/index.html" class="active"><a class="padding" href="/basics/intro/index.html">引言</a></li></ul></li>
+          <li data-nav-id="/basics/intro/index.html" class="active"><a class="padding" href="/basics/intro/index.html">概念介绍</a></li></ul></li>
           </ul>
         </div>
         <div class="padding footermargin footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter showFooter"></div>
@@ -241,8 +287,8 @@
         </div>
       </div>
     </aside>
-    <script src="/js/clipboard.min.js?1719362982" defer></script>
-    <script src="/js/perfect-scrollbar.min.js?1719362982" defer></script>
-    <script src="/js/theme.js?1719362982" defer></script>
+    <script src="/js/clipboard.min.js?1719363346" defer></script>
+    <script src="/js/perfect-scrollbar.min.js?1719363346" defer></script>
+    <script src="/js/theme.js?1719363346" defer></script>
   </body>
 </html>
