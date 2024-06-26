@@ -5,7 +5,7 @@ weight = 2
 
 ## 前置准备
 
-本文是 jupyterhub on kubernetes 的使用文档，本文描述的环境基于 [jupyterhub on kubernetes]({{< ref "jupyterhub-on-kubernetes" >}})
+本文是 jupyterhub on kubernetes 的使用文档，本文描述的环境基于 [jupyterhub on kubernetes]({{% ref "jupyterhub-on-kubernetes" %}})
 
 在上述文档中，我们部署的 kubernetes master 节点 nodeIP 为 172.16.0.119, 因此以下教程中使用的访问 ip 都是 172.16.0.119
 

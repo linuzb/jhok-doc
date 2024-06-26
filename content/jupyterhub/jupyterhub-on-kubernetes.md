@@ -6,7 +6,7 @@ weight = 1
 
 ## 前置准备
 
-- 首先需要部署 kubernetes 集群，参考[KUBESPRAY 部署 K8S]({{< ref "kubespray-deploy-k8s" >}} "deply")
+- 首先需要部署 kubernetes 集群，参考[KUBESPRAY 部署 K8S]({{% ref "kubespray-deploy-k8s" %}} "deply")
 - [Helm | Installing Helm](https://helm.sh/docs/intro/install/) 安装 helm
 
 ### 存储：Longhorn provider
@@ -16,7 +16,7 @@ jupyterhub 需要两部分存储
 1. 用户信息：该部分存储主要用于存储用户基本信息，以及用户登录状态等。
 2. 用户数据：该部分存储将被挂载到用户 home 目录，主要用于用户数据存储
 
-部署 Longhorn 参考 [Longhorn deploy]({{< ref "longhorn" >}})
+部署 Longhorn 参考 [Longhorn deploy]({{% ref "longhorn" %}})
 
 ### 接入 github oauth
 
