@@ -13,7 +13,7 @@ weight = 2
 | 部署机  | 任意 | Ubuntu-Server 22.04 | k8s | 部署k8s机器，非k8s集群节点 |
 | kube-master-119  | 172.16.0.100 | Ubuntu-Server 22.04  | k8s | 初始化 k8s master 节点 |
 | kube-node-120  | 172.16.0.117 | Ubuntu-Server 22.04 | k8s | 初始化 k8s node |
-| kube-node-114  | 172.16.0.114 | Ubuntu-Server 22.04 | k8s | 后续加入的 k8s node |
+| kube-node-105  | 172.16.0.105 | Ubuntu-Server 22.04 | k8s | 后续加入的 k8s node |
 
 
 ## kubespray 配置
@@ -42,8 +42,9 @@ vim inventory/mycluster/inventory.ini
 # ## different ip than the default iface
 # ## We should set etcd_member_name for etcd cluster. The node that is not a etcd member do not need to set the value, or can set the empty string value.
 [all]
-kube-master-119 ansible_ssh_host=172.16.0.119 ansible_ssh_user=k8s ip=172.16.0.119   mask=/24
-kube-node-120 ansible_ssh_host=172.16.0.120 ansible_ssh_user=linuzb ip=172.16.0.120   mask=/24
+kube-master-119 ansible_ssh_host=172.16.0.119 ansible_ssh_user=k8s ip=172.16.0.119 mask=/24
+kube-node-120 ansible_ssh_host=172.16.0.120 ansible_ssh_user=k8s ip=172.16.0.120 mask=/24
+kube-node-105 ansible_ssh_host=172.16.0.105 ansible_ssh_user=k8s ip=172.16.0.105 mask=/24
 
 # ## configure a bastion host if your nodes are not directly reachable
 # [bastion]
@@ -57,6 +58,7 @@ kube-master-119
 
 [kube_node]
 kube-node-120
+kube-node-105
 
 [calico_rr]
 
@@ -169,6 +171,20 @@ files_repo: "https://files.m.daocloud.io"
 EOF
 ```
 
+```bash
+# Use the download mirror
+cp inventory/mycluster/group_vars/all/offline.yml inventory/mycluster/group_vars/all/mirror.yml
+sed -i -E '/# .*\{\{ files_repo/s/^# //g' inventory/mycluster/group_vars/all/mirror.yml
+tee -a inventory/mycluster/group_vars/all/mirror.yml <<EOF
+gcr_image_repo: "gcr.linuzb.xyz"
+kube_image_repo: "k8s.m.daocloud.io"
+docker_image_repo: "docker.linuzb.xyz"
+quay_image_repo: "quay.linuzb.xyz"
+github_image_repo: "ghcr.linuzb.xyz"
+files_repo: "https://files.m.daocloud.io"
+EOF
+```
+
 {{% notice style="warning" %}}
 当前国内镜像中心处于不可用状态，大家自行解决
 {{% /notice %}}
@@ -212,7 +228,7 @@ ansible-playbook -i /inventory/inventory.ini cluster.yml --user k8s --ask-pass -
 ```bash
 ansible-playbook -i /inventory/inventory.ini scale.yml \
   --user=k8s --ask-pass --become --ask-become-pass -b \
-   --limit=kube-node-114
+   --limit=kube-node-105
 ```
 
 {{% notice style="tip" %}}
@@ -241,9 +257,9 @@ ansible-playbook \
 
 `-e` 里写要移出的节点名列表，如果您要删除的节点不在线，您应该将`reset_nodes=false`和添加`allow_ungraceful_removal=true`到您的额外变量中
 
-### 后置操作
+## 后置操作
 
-#### 获取kubeconfig
+### 获取kubeconfig
 
 部署完成后，可以在master节点上的 `/root/.kube/config` 路径获取到 kubeconfig
 
@@ -252,15 +268,10 @@ ansible-playbook \
 ```bash
 alias k='kubectl --kubeconfig /home/k8s/Projects/kube-cert/kubeconfig'
 ```
-#### 节点支持 GPU
 
-我们需要配置 nvidia container用于节点支持GPU。
+### 节点支持 GPU
 
-首先我们需要安装 nvidia container toolkit，然后修改运行时的配置文件，将运行时更换为 nvidia container。详细过程请参考以下文档。
-
-- [Installing the NVIDIA Container Toolkit — NVIDIA Container Toolkit 1.14.5 documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#configuring-docker)
-- [NVIDIA/nvidia-container-toolkit: Build and run containers leveraging NVIDIA GPUs (github.com)](https://github.com/NVIDIA/nvidia-container-toolkit)
-
+参考文档 [GPU node]({{% ref "gpu-node" %}})
 
 
 ## 参考文档
