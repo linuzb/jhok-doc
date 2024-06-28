@@ -101,3 +101,12 @@ helm upgrade -i nvdp nvdp/nvidia-device-plugin \
   --version 0.14.5 \
   --values config.yaml
 ```
+
+#### 节点 label
+
+我们的集群中可能会有不同型号的 GPU 卡，在一些场景中，我们希望应用能够调度到相应型号的 GPU 卡上，这里我们使用 label 来给节点分类。如果想要使用某类 GPU 卡，只需要给应用增加 `labelSelector`.
+
+```shell
+kubectl label node kube-node-120 gpu-type=nvidia-geforce-rtx-4090
+kubectl label node kube-node-105 gpu-type=nvidia-rtx-a6000
+```
