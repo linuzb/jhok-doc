@@ -28,13 +28,9 @@ sudo vim /etc/containerd/config.toml
 现在我们切换到新的配置方式, [Contaienrd Configure Image Registry](https://github.com/containerd/containerd/blob/main/docs/cri/registry.md)
 
 ```toml
-[plugins."io.containerd.cri.v1.images".registry]
-   config_path = "/etc/containerd/certs.d"
+    [plugins."io.containerd.grpc.v1.cri".registry]
+      config_path = "/etc/containerd/certs.d"
 ```
-
-{{% notice style="tip" %}}
-"io.containerd.grpc.v1.cri" 替换成了 "io.containerd.cri.v1.images"
-{{% /notice %}}
 
 其中 config_path 指定了镜像仓库配置的目录, 目录结构如下。使用镜像地址作为目录名, 例如 `docker.io`.
 
