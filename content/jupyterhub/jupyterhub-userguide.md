@@ -7,7 +7,6 @@ weight = 2
 
 本文是 jupyterhub on kubernetes 的使用文档，本文描述的环境基于 [jupyterhub on kubernetes]({{% ref "jupyterhub-on-kubernetes" %}})
 
-在上述文档中，我们部署的 kubernetes master 节点 nodeIP 为 172.16.0.119, 因此以下教程中使用的访问 ip 都是 172.16.0.119
 
 ## 环境准备
 
@@ -17,7 +16,7 @@ weight = 2
 
 ## 登录
 
-使用浏览器访问 http://172.16.0.119:30080/
+使用浏览器访问 http://hub.aicluster.local
 ![hub-login](/images/hub-login.png)
 
 ### 认证
@@ -27,6 +26,10 @@ weight = 2
 说明：
 - 这里仅使用 github oauth 做认证鉴权，暂无其它依赖，原理课参考文档 [Authorizing OAuth apps - GitHub Docs](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps)
 - github 账号的用户名需要为全字母及数字，暂不支持非字母数字之外的其他符号
+
+{{% notice style="note" %}}
+首次登录需要联系管理员添加账号权限
+{{% /notice %}}
 
 ## 应用选择
 
@@ -96,11 +99,14 @@ TODO： 待补充如何修改自定义shell即配置
 
 ### 存储
 
-由于该软件底层使用的是容器服务，一旦应用被删除（底层容器被删除），则容器中的文件都将被删除。
+由于该软件底层使用的是容器服务，一旦应用被删除（底层容器被删除），则容器中的文件都将被删除。本系统为用户提供两种持久化存储，即以下两个目录的内容除非用户手动删除，否则即使应用销毁后重建也不影响。
 
-本方案为每个用户的 `/home/{username}` 目录挂载了持久化存储，保存在 home 目录下的文件是持久化的，除非人工手动删除，否则容器的销毁不会影响该目录下的文件。因此，持久化的文件一定要保存在 home目录下。
+- `/home/{username}`,该目录默认300G空间，后端使用固态硬盘，推荐存放用于快速读取的文件。
+- `/home/data`，该目录默认 1T 存储空间，后端使用机械硬盘，推荐存放不常用的冷数据。
 
-首次登录验证用户目录是否持久化：首先进入 home 目录（在luncher中新开一个 terminal），输入命令 `cd ~/ && touch test.txt`, 该命令是进入当前用户的home目录，然后销毁环境，重新进入环境查看 `~/test.txt` 是否存在。如果存在，说明已经挂载持久化盘，如果不存在请联系管理员
+需要长久保存的文件一定要保存在以上目录。
+
+首次登录验证用户目录是否持久化：首先进入 `/home/{username}`或者`/home/data` 目录（在luncher中新开一个 terminal），输入命令 `cd ~/ && touch test.txt`, 该命令是进入当前用户的home目录，然后销毁环境，重新进入环境查看 `~/test.txt` 是否存在。如果存在，说明已经挂载持久化盘，如果不存在请联系管理员
 
 ### 网络
 
@@ -112,7 +118,7 @@ TODO： 流量监控
 
 #### kubernetes 内网
 
-可以访问kubernetes 内网，即可以向 kubernetes 提交作业，待补充。
+可以访问kubernetes 内网，即可以向 kubernetes 提交作业(分布式任务，可以使用多机多卡)，待补充。
 
 ### 销毁环境
 
@@ -124,7 +130,7 @@ TODO： 流量监控
 
 双击 Stop My Server 按钮即可销毁环境
 
-方法2 直接在浏览器输入 stop server 页面`/hub/home`, 即 http://172.16.0.100:30080/hub/home
+方法2 直接在浏览器输入 stop server 页面`/hub/home`, 即 http://hub.aicluster.local/hub/home
 
 #### 自动销毁环境
 
@@ -138,7 +144,7 @@ TODO： 流量监控
 
 ## 监控
 
-监控页面地址 http://172.16.0.100:30759/?orgId=1
+监控页面地址 http://grafana.aicluster.local
 
 参考 kubernetes monitoring
 
