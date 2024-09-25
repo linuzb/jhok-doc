@@ -111,4 +111,6 @@ kubectl label nodes kube-master-119 gpu-type=nvidia-geforce-rtx-4090
 kubectl label nodes kube-node-120 gpu-type=nvidia-geforce-rtx-4090
 kubectl label nodes kube-node-105 gpu-type=nvidia-rtx-a6000
 kubectl label nodes kube-node-128 gpu-type=nvidia-geforce-rtx-4090
+kubectl label nodes kube-node-106 gpu-type=nvidia-geforce-rtx-4090
+
 ```
