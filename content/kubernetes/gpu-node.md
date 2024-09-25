@@ -61,7 +61,7 @@ sudo nvidia-ctk runtime configure --runtime=containerd
 ```
 
 {{% notice style="note" %}}
-注意： 执行完以上命令之后，检查 `plugins."io.containerd.grpc.v1.cri".containerd.default_runtime_name` 的值是否为 `nvidia`, 如果不是。需要在宿主机上修改 containerd 默认的 runtime 为 nvidia
+注意： 执行完以上命令之后，检查宿主机 `/etc/containerd/config.toml` 中  `plugins."io.containerd.grpc.v1.cri".containerd.default_runtime_name` 的值是否为 `nvidia`, 如果不是。需要在宿主机上修改 containerd 默认的 runtime 为 nvidia
 {{% /notice %}}
 
 
@@ -110,4 +110,5 @@ helm upgrade -i nvdp nvdp/nvidia-device-plugin \
 kubectl label nodes kube-master-119 gpu-type=nvidia-geforce-rtx-4090
 kubectl label nodes kube-node-120 gpu-type=nvidia-geforce-rtx-4090
 kubectl label nodes kube-node-105 gpu-type=nvidia-rtx-a6000
+kubectl label nodes kube-node-128 gpu-type=nvidia-geforce-rtx-4090
 ```
