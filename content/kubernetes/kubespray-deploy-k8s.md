@@ -14,6 +14,9 @@ weight = 2
 | kube-master-119  | 172.16.0.100 | Ubuntu-Server 22.04  | k8s | 初始化 k8s master 节点 |
 | kube-node-120  | 172.16.0.117 | Ubuntu-Server 22.04 | k8s | 初始化 k8s node |
 | kube-node-105  | 172.16.0.105 | Ubuntu-Server 22.04 | k8s | 后续加入的 k8s node |
+| kube-node-103  | 172.16.0.103 | Ubuntu-Server 22.04 | k8s | 后续加入的 k8s node |
+| kube-node-106  | 172.16.0.106 | Ubuntu-Server 22.04 | k8s | 后续加入的 k8s node |
+| kube-node-128  | 172.16.0.128 | Ubuntu-Server 22.04 | k8s | 后续加入的 k8s node |
 
 
 ## kubespray 配置
@@ -45,6 +48,9 @@ vim inventory/mycluster/inventory.ini
 kube-master-119 ansible_ssh_host=172.16.0.119 ansible_ssh_user=k8s ip=172.16.0.119 mask=/24
 kube-node-120 ansible_ssh_host=172.16.0.120 ansible_ssh_user=k8s ip=172.16.0.120 mask=/24
 kube-node-105 ansible_ssh_host=172.16.0.105 ansible_ssh_user=k8s ip=172.16.0.105 mask=/24
+kube-node-103 ansible_ssh_host=172.16.0.103 ansible_ssh_user=k8s ip=172.16.0.103 mask=/24
+kube-node-106 ansible_ssh_host=172.16.0.106 ansible_ssh_user=k8s ip=172.16.0.106 mask=/24
+kube-node-128 ansible_ssh_host=172.16.0.128 ansible_ssh_user=k8s ip=172.16.0.128 mask=/24
 
 # ## configure a bastion host if your nodes are not directly reachable
 # [bastion]
@@ -59,6 +65,9 @@ kube-master-119
 [kube_node]
 kube-node-120
 kube-node-105
+kube-node-103
+kube-node-106
+kube-node-128
 
 [calico_rr]
 
@@ -177,7 +186,7 @@ cp inventory/mycluster/group_vars/all/offline.yml inventory/mycluster/group_vars
 sed -i -E '/# .*\{\{ files_repo/s/^# //g' inventory/mycluster/group_vars/all/mirror.yml
 tee -a inventory/mycluster/group_vars/all/mirror.yml <<EOF
 gcr_image_repo: "gcr.linuzb.xyz"
-kube_image_repo: "k8s.m.daocloud.io"
+kube_image_repo: "k8s.linuzb.xyz"
 docker_image_repo: "docker.linuzb.xyz"
 quay_image_repo: "quay.linuzb.xyz"
 github_image_repo: "ghcr.linuzb.xyz"
@@ -228,7 +237,7 @@ ansible-playbook -i /inventory/inventory.ini cluster.yml --user k8s --ask-pass -
 ```bash
 ansible-playbook -i /inventory/inventory.ini scale.yml \
   --user=k8s --ask-pass --become --ask-become-pass -b \
-   --limit=kube-node-105
+   --limit=kube-node-128
 ```
 
 {{% notice style="tip" %}}
