@@ -1,18 +1,11 @@
 +++
-title = "Jupyterhub Userguide"
+title = "Jupyterhub 用户手册"
 weight = 2
 +++
 
 ## 前置准备
 
 本文是 jupyterhub on kubernetes 的使用文档，本文描述的环境基于 [jupyterhub on kubernetes]({{% ref "jupyterhub-on-kubernetes" %}})
-
-
-## 环境准备
-
-### 内网访问
-
-可以访问内网的浏览器
 
 ## 访问
 
@@ -27,6 +20,8 @@ weight = 2
 ### 登录 && 注册
 
 点击 `Singn in with WLS-Auth`，进入登录页面。
+
+![casdoor-login](/images/casdoor-login.png)
 
 如果用户已经注册过，请直接进行登录，如果未注册过，请选择立即注册，注册成功之后再进行注册。
 
@@ -124,6 +119,9 @@ sudo apt install vim
 我们使用 oh-my-zsh 来美化命令行和提供自动补全的能力。
 
 详细请参考官方文档![install](https://ohmyz.sh/#install)
+
+推荐主题
+- ys
 
 ### 存储
 
