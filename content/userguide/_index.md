@@ -1,6 +1,6 @@
 +++
 archetype = "chapter"
-title = "Jupyterhub"
+title = "Jupyterhub 用户手册"
 weight = 3
 +++
 

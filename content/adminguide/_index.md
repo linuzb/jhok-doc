@@ -1,6 +1,6 @@
 +++
 archetype = "chapter"
-title = "Kubernetes"
+title = "管理员手册"
 weight = 2
 +++
 

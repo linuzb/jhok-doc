@@ -1,5 +1,5 @@
 +++
-title = "Jupyterhub on Kubernetes"
+title = "部署 jupyterhub"
 weight = 1
 +++
 
