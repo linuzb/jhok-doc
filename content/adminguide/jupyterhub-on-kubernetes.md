@@ -9,69 +9,41 @@ weight = 1
 - 首先需要部署 kubernetes 集群，参考[KUBESPRAY 部署 K8S]({{% ref "kubespray-deploy-k8s" %}} "deply")
 - [Helm | Installing Helm](https://helm.sh/docs/intro/install/) 安装 helm
 
+### 获取 kubeconfig
+
+kubeconfig 是一个文件，该文件中包含了集群的连接信息。我们一般使用 `kubectl` 和 `helm` 工具来访问和操作集群。
+
+请联系管理员获取。
+
 ### 存储：Longhorn provider
 
-jupyterhub 需要两部分存储
+- ceph
+- cubefs
 
-1. 用户信息：该部分存储主要用于存储用户基本信息，以及用户登录状态等。
-2. 用户数据：该部分存储将被挂载到用户 home 目录，主要用于用户数据存储
+TODO： 补充文档
 
-部署 Longhorn 参考 [Longhorn deploy]({{% ref "longhorn" %}})
+### 认证
 
-### 接入 github oauth
+- casdoor
 
-本文使用 github oauth 作为认证方式，首先我们需要提前注册一个 GitHub OAuth 应用程序，请参阅 GitHub 有关注册应用程序的官方文档 [registering an app](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app).
+TODO： 补充文档
 
-然后我们得到三个信息
-1. client-id
-2. client-secret
-3. oauthCallbackUrl
+## 使用 helm 安装/更新 jupyterhub
 
-为了避免在配置中明文保存密码，我们将以上信息通过 secret 的形式存储在 Kubernetes 中，可以使用挂载 secret 的形式使用 secret 变量。
+本文中介绍的功能配置全部放在 `config.yaml` 和 `singleuser-image.yaml` 文件中，这两个文件会合并，最终会覆盖 helm chart 中默认的 `values.yaml`
 
-### 创建secret
-
-接下来我们给 client-id 和 client-secret 创建secret
-
-```shell
-echo -n "client-id" | base64
-echo -n "client-secret" | base64
-echo -n "oauthCallbackUrl" | base64
-```
-
-将以上结果填充到用于创建 secret 的 yaml 中
-
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: githubsecret
-  namespace: jhub
-type: Opaque
-data:
-  clientId: "base64(clientId)"
-  clientSecret: "base64(clientSecret)"
-  oauthCallbackUrl: "base64(oauthCallbackUrl)"
-```
-{{% notice style="note" %}}
-注意：该 yaml 配置独立存放
-{{% /notice %}}
-
-
-## 使用 helm 安装 jupyterhub
-
-完整的 helm values 文件参考 [values.yaml](https://github.com/jupyterhub/zero-to-jupyterhub-k8s/blob/main/jupyterhub/values.yaml)
-
-本文中介绍的功能配置全部放在 `./config.yaml` 文件中，该文件会覆盖 helm chart 中默认的 `values.yaml`
+其中 `singleuser-image.yaml` 主要存放了应用镜像配置。我们发布应用主要修改这个文件。
 
 ```
-# Let helm the command line tool know about a Helm chart repository that we decide to name jupyterhub.
 helm repo add jupyterhub https://hub.jupyter.org/helm-chart/
 
 helm repo update
 
-# 下载到本地
-helm pull jupyterhub/jupyterhub
+# 下载到本地，方便我们调试
+helm pull jupyterhub/jupyterhub --version 3.3.6
+
+# 解压 helm 包
+tar -zxvf jupyterhub-3.3.6.tgz
 
 # 修改 config.yaml 从本地安装
 helm upgrade --cleanup-on-fail \
@@ -79,8 +51,11 @@ helm upgrade --cleanup-on-fail \
   --namespace jhub \
   --create-namespace \
   --version=3.3.6 \
-  --values config.yaml
+  --values config.yaml \
+  --values singleuser-image.yaml
 ```
+
+完整的 helm values 文件参考 [values.yaml](https://github.com/jupyterhub/zero-to-jupyterhub-k8s/blob/main/jupyterhub/values.yaml)
 
 ### config.yaml
 
