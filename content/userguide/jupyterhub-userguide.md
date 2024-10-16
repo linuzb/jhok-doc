@@ -9,7 +9,7 @@ weight = 2
 
 ## 访问
 
-首先访问 homagepage 页面，打开 http://homepage.aicluster.local, 然后找到 jupyterhub
+首先访问 homagepage 页面，打开 https://home.lab.linuzb.xyz, 然后找到 jupyterhub
 
 ![homepage-jupyterhub](/images/homepage-jupyterhub.png)
 
@@ -23,10 +23,10 @@ weight = 2
 
 ![casdoor-login](/images/casdoor-login.png)
 
-如果用户已经注册过，请直接进行登录，如果未注册过，请选择立即注册，注册成功之后再进行注册。
+新用户请选择立即注册，注册成功之后再进行登录。
 
 {{% notice style="note" %}}
-由于jupyterhub采用白名单登录，首次登录需要联系管理员添加账号权限
+jupyterhub 采用白名单登录，首次注册成功后将用户名发送给管理员，管理员将用户名添加到白名单后方可登录。
 {{% /notice %}}
 
 ## 应用选择
@@ -60,7 +60,7 @@ weight = 2
 
 ### 自定义应用
 
-请参考 [自定义镜像]({{% ref "custom-images" %}})
+如果应用中的软件无法满足自己的需求，想要定制自定义的应用，请参考 [自定义镜像]({{% ref "custom-images" %}})
 
 ### 使用 vscode 编写代码
 
@@ -68,7 +68,7 @@ weight = 2
 
 Q: 如何返回jupyter 界面？
 
-A: 由于vscode界面没做跳转链接，将浏览器url中的 `/vscode` 及之后的内容全部删除即可返回jupyter页面。或者从 homepage 主页重新进入。
+A: 由于vscode界面没做跳转链接，将浏览器url中的 `/vscode` 及之后的内容全部删除即可返回jupyter页面。或者从 home 主页重新进入。
 
 #### 在 vscode 中切换目录
 
@@ -111,7 +111,7 @@ sudo apt install vim
 ```
 
 {{% notice style="note" %}}
-以上方法安装的软件只是临时的，一旦环境销毁重建后将不存在。如果想将软件或者包永久安装到环境中，请使用自定义应用的方法。
+以上方法安装的软件只是临时的，一旦环境销毁重建后将不存在。如果想将软件或者包永久安装到环境中，请使用[自定义应用]({{% ref "custom-images" %}})的方法。
 {{% /notice %}}
 
 #### [可选]命令行美化 oh-my-zsh
@@ -167,5 +167,9 @@ sudo apt install vim
 
 ## 监控
 
-请从 [homepage](http:/homepage.aicluster.local) 页面进入。
+监控页面可以查看应用程序的 CPU、内存、存储、网络以及 GPU 的使用情况。
+
+请从 [homepage](https:/home.lzb.linuzb.xyz) 页面进入。
+
+详细内容待补充。
 
