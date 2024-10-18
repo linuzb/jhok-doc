@@ -118,10 +118,11 @@ sudo apt install vim
 
 我们使用 oh-my-zsh 来美化命令行和提供自动补全的能力。
 
-详细请参考官方文档![install](https://ohmyz.sh/#install)
+详细请参考官方文档 [install](https://ohmyz.sh/#install)
 
 推荐主题
 - ys
+- dstufft
 
 ### 存储
 
