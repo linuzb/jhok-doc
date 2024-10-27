@@ -65,7 +65,7 @@ weight = 4
 
 
 在点击 `SYNC` 按钮之后，左侧会弹出一个发布框
-![argocd-synced](/static/images/argocd-jupyterhub-sync.png)
+![argocd-synced](/images/argocd-jupyterhub-sync.png)
 
 1. 需要发布的配置，这里如果不理解可以不动。
 2. 再次点击 `SYNCHRONIZE` 按钮即可
