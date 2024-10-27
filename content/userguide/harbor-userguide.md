@@ -77,6 +77,8 @@ docker login --username=admin registry.wls.linuzb.xyz
 
 ### 上传镜像
 
+以下步骤在内网环境操作。
+
 首先从文件加载镜像，以 `python-3.11-5d9bd54.tar` 为例，注意使用正确的路径
 
 ```shell
@@ -92,7 +94,7 @@ docker tag registry.cn-hangzhou.aliyuncs.com/linuzb/scipy-notebook:python-3.11-5
 ```
 
 {{% notice style="note" %}}
-该步骤将旧镜像名的前缀 `registry.cn-hangzhou.aliyuncs.com/linuzb` 替换成 `registry.wls.linuzb.xyz/library`,后面部分不变。
+该步骤将旧镜像名的前缀 `registry.cn-hangzhou.aliyuncs.com/linuzb` 替换成 `registry.wls.linuzb.xyz/library`, 这样镜像就可以推送到私有镜像中心，后面部分不变。
 {{% /notice %}}
 
 最后执行上传操作
